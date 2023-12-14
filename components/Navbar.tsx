@@ -1,10 +1,15 @@
+'use client'
+
 import { NAV_LINKS } from "@/constants"
 import Image from "next/image"
 import Link from "next/link"
 import Button from "./Button"
+import { useState } from "react"
 
 
 export const Navbar = () => {
+
+  const [toggleDropdown, setToggleDropdown] = useState(false);
   return (
     <nav className="flexBetween 
     max-container padding-container relative z-30 py-5">
@@ -44,7 +49,29 @@ export const Navbar = () => {
     alt="menu"
     width={32}
     height={32}
-    className='inline-block cursor-pointer lg:hidden' />
+    className='inline-block cursor-pointer lg:hidden'
+    onClick={() => setToggleDropdown((prev) => !prev)} />
+
+    {toggleDropdown && (
+      <div className="dropdown">
+        {NAV_LINKS.map((link) => (
+          <Link
+          href={link.href}
+          key={link.key}
+          className='dropdown_link'
+          onClick={() => setToggleDropdown((prev) => !prev)}>
+            {link.label}
+          </Link>
+        ))}
+
+      <Button
+      type='button'
+      title='Log In'
+      icon='/user.svg'
+      variant='btn_dark_green'
+       />
+      </div>
+    )}
     </nav>
   )
 }
